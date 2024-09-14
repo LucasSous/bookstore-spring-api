@@ -6,10 +6,9 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class InvalidEmailException extends RuntimeException{
-
+public class NotFoundException extends RuntimeException{
     @Builder
-    public InvalidEmailException(String message){
+    public NotFoundException(String message) {
         super(message);
     }
 }

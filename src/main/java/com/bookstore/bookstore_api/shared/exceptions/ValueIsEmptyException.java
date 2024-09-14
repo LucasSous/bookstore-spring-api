@@ -7,12 +7,10 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class ValueIsEmptyException extends RuntimeException{
-    private String value;
 
     @Builder
-    public ValueIsEmptyException(String message, String value){
+    public ValueIsEmptyException(String message){
         super(message);
-        this.value = value;
     }
 }
 

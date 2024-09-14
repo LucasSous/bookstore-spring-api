@@ -17,27 +17,27 @@ public class CreateUserValidator {
         var password = createUserDTO.getPassword();
         var role = createUserDTO.getRole();
         if (userName == null || userName.isBlank()) {
-            throw new ValueIsEmptyException("The value of the userName parameter cannot be null or empty", userName);
+            throw new ValueIsEmptyException("The value of the userName parameter cannot be null or empty");
         } else if (userName.length() < 3 || userName.length() > 100) {
-            throw new MinMaxException("The value of the userName parameter must be between 3 and 100 characters", userName);
+            throw new MinMaxException("The value of the userName parameter must be between 3 and 100 characters");
         } else if (isValueValid(userName)) {
-            throw new InvalidValueException("Invalid userName format", userName);
+            throw new InvalidValueException("Invalid userName format");
         }
         if (email == null || email.isBlank()) {
-            throw new ValueIsEmptyException("The value of the email parameter cannot be null or empty", email);
+            throw new ValueIsEmptyException("The value of the email parameter cannot be null or empty");
         } else if(isEmailValid(email)) {
-            throw new InvalidEmailException("Invalid email format", email);
+            throw new InvalidEmailException("Invalid email format");
         } else if (email.length() > 100) {
-            throw new MinMaxException("The value of the email parameter must have a maximum of 100 characters", email);
+            throw new MinMaxException("The value of the email parameter must have a maximum of 100 characters");
         }
         if(password == null || password.isBlank()){
-            throw new ValueIsEmptyException("The value of the password parameter cannot be null or empty", password);
+            throw new ValueIsEmptyException("The value of the password parameter cannot be null or empty");
         }
         if(hasSpaces(password)) {
-            throw new InvalidValueException("Invalid password", password);
+            throw new InvalidValueException("Invalid password");
         }
         if(role != RoleType.ADMIN && role != RoleType.USER) {
-            throw new InvalidValueException("Invalid user role", role.name());
+            throw new InvalidValueException("Invalid user role");
         }
     }
 

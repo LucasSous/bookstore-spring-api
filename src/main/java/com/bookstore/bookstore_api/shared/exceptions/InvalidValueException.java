@@ -7,11 +7,9 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class InvalidValueException extends RuntimeException{
-    private String value;
 
     @Builder
-    public InvalidValueException(String message, String value) {
+    public InvalidValueException(String message) {
         super(message);
-        this.value = value;
     }
 }

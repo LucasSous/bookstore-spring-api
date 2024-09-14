@@ -2,13 +2,11 @@ package com.bookstore.bookstore_api.shared.handlers;
 
 import com.bookstore.bookstore_api.shared.exceptions.InvalidValueException;
 import com.bookstore.bookstore_api.shared.exceptions.MinMaxException;
+import com.bookstore.bookstore_api.shared.exceptions.NotFoundException;
 import com.bookstore.bookstore_api.shared.exceptions.ValueIsEmptyException;
 import com.bookstore.bookstore_api.shared.models.DTOs.ExceptionDTO;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.*;
 
 @ControllerAdvice
 public class CommonValidationExceptionHandler {
@@ -17,21 +15,28 @@ public class CommonValidationExceptionHandler {
     @ResponseBody
     @ExceptionHandler(ValueIsEmptyException.class)
     public ExceptionDTO valueIsEmpty(ValueIsEmptyException ex){
-        return new ExceptionDTO(ex.getMessage(), ex.getValue());
+        return new ExceptionDTO(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
     @ExceptionHandler(InvalidValueException.class)
     public ExceptionDTO invalidValue(InvalidValueException ex){
-        return new ExceptionDTO(ex.getMessage(), ex.getValue());
+        return new ExceptionDTO(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
     @ExceptionHandler(MinMaxException.class)
     public ExceptionDTO minMaxValue(MinMaxException ex){
-        return new ExceptionDTO(ex.getMessage(), ex.getValue());
+        return new ExceptionDTO(HttpStatus.BAD_REQUEST, ex.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseBody
+    @ExceptionHandler(NotFoundException.class)
+    public ExceptionDTO notFound(NotFoundException ex){
+        return new ExceptionDTO(HttpStatus.NOT_FOUND, ex.getMessage());
     }
 
 }
