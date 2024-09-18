@@ -21,11 +21,11 @@ public class AuthServiceImpl implements AuthService {
     private final TokenService tokenService;
     @Override
     public LoginResponseDTO login(LoginRequestDTO body) {
-        UserEntity user = this.userEntityRepository.findByEmail(body.email()).orElseThrow(() -> new NotFoundException("User not found"));
+        UserEntity user = userEntityRepository.findByEmail(body.email()).orElseThrow(() -> new NotFoundException("User not found"));
         var isCorrectPassword = passwordEncoder.matches(body.password(), user.getPassword());
         if(!isCorrectPassword) throw new UnauthorizedException("Incorrect password");
 
-        String token = this.tokenService.generateToken(user);
+        String token = tokenService.generateToken(user);
         return LoginResponseDTO.builder()
                 .userId(user.getId())
                 .userName(user.getUserName())

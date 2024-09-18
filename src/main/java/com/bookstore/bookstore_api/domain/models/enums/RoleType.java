@@ -1,6 +1,13 @@
 package com.bookstore.bookstore_api.domain.models.enums;
 
-public enum RoleType {
+import org.springframework.security.core.GrantedAuthority;
+
+public enum RoleType implements GrantedAuthority {
     USER,
-    ADMIN
+    ADMIN;
+
+    @Override
+    public String getAuthority() {
+        return this.name();
+    }
 }

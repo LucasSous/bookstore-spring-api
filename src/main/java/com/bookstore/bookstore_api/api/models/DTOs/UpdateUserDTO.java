@@ -13,8 +13,9 @@ import org.hibernate.validator.constraints.Length;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Schema(name = "CreateUser")
-public class CreateUserDTO {
+@Schema(name = "UpdateUser")
+public class UpdateUserDTO {
+
     @NotNull
     @NotEmpty
     @Length(min = 3, max = 100)
@@ -27,12 +28,6 @@ public class CreateUserDTO {
     @Length(max = 100)
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED, example = "email@gmail.com")
     private String email;
-
-    @NotNull
-    @NotEmpty
-    @Length(max = 100)
-    @Schema(requiredMode = Schema.RequiredMode.REQUIRED, example = "Admin123@")
-    private String password;
 
     @Schema(requiredMode = Schema.RequiredMode.REQUIRED, example = "ADMIN")
     private RoleType role;

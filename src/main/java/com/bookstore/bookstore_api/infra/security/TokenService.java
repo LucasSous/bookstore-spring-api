@@ -16,6 +16,7 @@ import java.time.ZoneOffset;
 public class TokenService {
     @Value("${api.security.token.secret}")
     private String secret;
+
     public String generateToken(UserEntity user) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
@@ -24,6 +25,9 @@ public class TokenService {
                     .withIssuer("bookstore-api")
                     .withSubject(user.getEmail())
                     .withExpiresAt(this.generateExpirationDate())
+                    .withClaim("userId", user.getId().toString())
+                    .withClaim("userName", user.getUserName())
+                    .withClaim("role", user.getRole().name())
                     .sign(algorithm);
             return token;
         } catch (JWTCreationException exception){
@@ -39,6 +43,20 @@ public class TokenService {
                     .build()
                     .verify(token)
                     .getSubject();
+        } catch (JWTVerificationException exception) {
+            return null;
+        }
+    }
+
+    public String getClaimFromToken(String token, String claimKey) {
+        try {
+            Algorithm algorithm = Algorithm.HMAC256(secret);
+            var decodedJWT = JWT.require(algorithm)
+                    .withIssuer("bookstore-api")
+                    .build()
+                    .verify(token);
+
+            return decodedJWT.getClaim(claimKey).asString();
         } catch (JWTVerificationException exception) {
             return null;
         }
