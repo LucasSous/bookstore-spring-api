@@ -3,7 +3,6 @@ package com.bookstore.bookstore_api.api.controllers;
 import com.bookstore.bookstore_api.api.models.DTOs.CreateUserDTO;
 import com.bookstore.bookstore_api.api.models.DTOs.UpdateUserDTO;
 import com.bookstore.bookstore_api.domain.services.UserService;
-import com.bookstore.bookstore_api.infra.security.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +18,6 @@ import java.util.UUID;
 public class UserController {
 
     private final UserService userService;
-    private final TokenService tokenService;
 
     @PostMapping("/user")
     public ResponseEntity create(@RequestBody @Validated CreateUserDTO body){

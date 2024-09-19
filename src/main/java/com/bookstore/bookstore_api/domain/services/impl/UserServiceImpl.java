@@ -119,14 +119,13 @@ public class UserServiceImpl implements UserService {
     }
 
     private PagedResultDTO<GetUserDTO> buildPagedResponseDTO(Page<UserEntity> page) {
-        PagedResultDTO<GetUserDTO> pagedResult = new PagedResultDTO<>();
-        pagedResult.setData(buildGetUserDTOList(page));
-        pagedResult.setCurrentPage(page.getNumber());
-        pagedResult.setTotalPages(page.getTotalPages());
-        pagedResult.setTotalItems(page.getTotalElements());
-        pagedResult.setPageSize(page.getSize());
-
-        return pagedResult;
+        return PagedResultDTO.<GetUserDTO>builder()
+                .data(buildGetUserDTOList(page))
+                .currentPage(page.getNumber())
+                .totalPages(page.getTotalPages())
+                .totalItems(page.getTotalElements())
+                .pageSize(page.getSize())
+                .build();
     }
 
     private boolean isAuthorized(String token, UUID userId) {
