@@ -1,11 +1,12 @@
 package com.bookstore.bookstore_api.api.models.DTOs;
 
-import com.bookstore.bookstore_api.api.models.builders.GetUserDTOBuilder;
 import com.bookstore.bookstore_api.domain.models.enums.RoleType;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Builder;
 
 import java.util.UUID;
 
+@Builder
 public record GetUserDTO(
         @Schema(description = "User id", example = "00000000000-0000-000-000-000000000000")
         UUID userId,
@@ -16,5 +17,4 @@ public record GetUserDTO(
         @Schema(description = "Role", example = "USER")
         RoleType role
 ) {
-        public static GetUserDTOBuilder builder() {return new GetUserDTOBuilder();}
 }

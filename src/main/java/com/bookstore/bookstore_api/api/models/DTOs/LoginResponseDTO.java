@@ -1,12 +1,12 @@
 package com.bookstore.bookstore_api.api.models.DTOs;
 
-import com.bookstore.bookstore_api.api.models.builders.LoginResponseDTOBuilder;
 import com.bookstore.bookstore_api.domain.models.enums.RoleType;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Builder;
 
-import java.io.Serializable;
 import java.util.UUID;
 
+@Builder
 public record LoginResponseDTO(
         @Schema(description = "User id", example = "00000000000-0000-000-000-000000000000")
         UUID userId,
@@ -16,6 +16,5 @@ public record LoginResponseDTO(
         String token,
         @Schema(description = "Role", example = "USER")
         RoleType role
-) implements Serializable {
-    public static LoginResponseDTOBuilder builder() {return new LoginResponseDTOBuilder();};
+){
 }

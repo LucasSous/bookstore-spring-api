@@ -39,7 +39,7 @@ public class UserController {
     }
 
     @PutMapping("/user/{id}")
-    public ResponseEntity update(@RequestHeader("Authorization") String token, @PathVariable UUID id, @RequestBody UpdateUserDTO body ){
+    public ResponseEntity update(@RequestHeader("Authorization") String token, @PathVariable UUID id, @RequestBody @Validated UpdateUserDTO body ){
         userService.update(token, id, body);
         return new ResponseEntity<>(HttpStatus.OK);
     }

@@ -1,8 +1,8 @@
 package com.bookstore.bookstore_api.api.controllers;
 
-import com.bookstore.bookstore_api.api.models.DTOs.CreatePublisherDTO;
-import com.bookstore.bookstore_api.api.models.DTOs.UpdatePublisherDTO;
-import com.bookstore.bookstore_api.domain.services.PublisherService;
+import com.bookstore.bookstore_api.api.models.DTOs.CreateBookWithStockDTO;
+import com.bookstore.bookstore_api.api.models.DTOs.UpdateBookWithStockDTO;
+import com.bookstore.bookstore_api.domain.services.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,42 +15,42 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
-public class PublisherController {
+public class BookController {
 
-    private final PublisherService publisherService;
+    private final BookService bookService;
 
-    @PostMapping("/publisher")
+    @PostMapping("/book")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity create(@RequestBody @Validated CreatePublisherDTO body){
-        publisherService.create(body);
+    public ResponseEntity create(@RequestBody @Validated CreateBookWithStockDTO body){
+        bookService.create(body);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @GetMapping("/publisher/{id}")
+    @GetMapping("/book/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity getById(@PathVariable UUID id){
-        var response = publisherService.getById(id);
+        var response = bookService.getById(id);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/publishers")
+    @GetMapping("/books")
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity getAll(@RequestParam Integer page, @RequestParam Integer items){
-        var response = publisherService.getAll(page, items);
+        var response = bookService.getAll(page, items);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PutMapping("/publisher/{id}")
+    @PutMapping("/book/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity update(@PathVariable UUID id, @RequestBody @Validated UpdatePublisherDTO body ){
-        publisherService.update(id, body);
+    public ResponseEntity update(@PathVariable UUID id, @RequestBody @Validated UpdateBookWithStockDTO body){
+        bookService.update(id, body);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping("/publisher/{id}")
+    @DeleteMapping("/book/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity delete(@PathVariable UUID id){
-        publisherService.delete(id);
+    public ResponseEntity delete(@PathVariable UUID id) {
+        bookService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

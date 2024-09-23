@@ -1,12 +1,11 @@
 package com.bookstore.bookstore_api.api.models.DTOs;
 
-import com.bookstore.bookstore_api.api.models.builders.LoginRequestDTOBuilder;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 
-import java.io.Serializable;
-
+@Builder
 public record LoginRequestDTO (
         @Schema(description = "Username.", example = "username")
         @NotEmpty
@@ -16,6 +15,5 @@ public record LoginRequestDTO (
         @NotEmpty
         @NotNull
         String password
-) implements Serializable {
-    public static LoginRequestDTOBuilder builder() {return new LoginRequestDTOBuilder();}
+){
 }

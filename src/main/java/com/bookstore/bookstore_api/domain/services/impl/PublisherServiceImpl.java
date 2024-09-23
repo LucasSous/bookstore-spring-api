@@ -2,7 +2,7 @@ package com.bookstore.bookstore_api.domain.services.impl;
 
 import com.bookstore.bookstore_api.api.models.DTOs.*;
 import com.bookstore.bookstore_api.domain.models.entities.PublisherEntity;
-import com.bookstore.bookstore_api.domain.repositories.PublisherRepository;
+import com.bookstore.bookstore_api.domain.repositories.PublisherEntityRepository;
 import com.bookstore.bookstore_api.domain.services.PublisherService;
 import com.bookstore.bookstore_api.shared.exceptions.AlreadyExistsException;
 import com.bookstore.bookstore_api.shared.exceptions.NotFoundException;
@@ -21,7 +21,7 @@ import java.util.UUID;
 @Service
 public class PublisherServiceImpl implements PublisherService {
 
-    private final PublisherRepository publisherRepository;
+    private final PublisherEntityRepository publisherRepository;
 
     @Override
     public void create(CreatePublisherDTO body) {
