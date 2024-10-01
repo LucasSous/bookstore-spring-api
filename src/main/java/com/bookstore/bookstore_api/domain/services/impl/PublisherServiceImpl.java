@@ -5,8 +5,10 @@ import com.bookstore.bookstore_api.domain.models.entities.PublisherEntity;
 import com.bookstore.bookstore_api.domain.repositories.PublisherEntityRepository;
 import com.bookstore.bookstore_api.domain.services.PublisherService;
 import com.bookstore.bookstore_api.shared.exceptions.AlreadyExistsException;
+import com.bookstore.bookstore_api.shared.exceptions.EntityDeletionException;
 import com.bookstore.bookstore_api.shared.exceptions.NotFoundException;
 import lombok.AllArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -61,8 +63,12 @@ public class PublisherServiceImpl implements PublisherService {
     @Override
     public void delete(UUID id) {
         PublisherEntity publisher = publisherRepository.findById(id).orElseThrow(() -> new NotFoundException("Publisher not found"));
+        try {
+            publisherRepository.deleteById(publisher.getId());
+        } catch (DataIntegrityViolationException e) {
+            throw new EntityDeletionException("This publisher cannot be deleted because it is being referenced in another entity");
+        }
 
-        publisherRepository.deleteById(publisher.getId());
     }
 
     private PublisherEntity buildPublisherEntity(CreatePublisherDTO createPublisherDTO){

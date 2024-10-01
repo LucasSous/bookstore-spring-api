@@ -1,15 +1,11 @@
 package com.bookstore.bookstore_api.domain.models.entities;
 
-import com.bookstore.bookstore_api.domain.models.enums.RoleType;
+import com.bookstore.bookstore_api.shared.models.enums.RoleType;
 import com.bookstore.bookstore_api.shared.models.entities.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.time.OffsetDateTime;
-import java.util.Collection;
-import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -38,10 +34,5 @@ public class UserEntity extends BaseEntity {
         this.email = email;
         this.password = password;
         this.role = role;
-    }
-
-    public Collection<? extends GrantedAuthority> getAuthorities(){
-        if(this.role == RoleType.ADMIN) return  List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
-        else return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
 }

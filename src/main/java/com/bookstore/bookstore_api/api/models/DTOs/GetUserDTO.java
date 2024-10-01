@@ -1,6 +1,6 @@
 package com.bookstore.bookstore_api.api.models.DTOs;
 
-import com.bookstore.bookstore_api.domain.models.enums.RoleType;
+import com.bookstore.bookstore_api.shared.models.enums.RoleType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 

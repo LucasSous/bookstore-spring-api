@@ -23,7 +23,7 @@ public class BookEntity extends BaseEntity {
     @Column(name = "launch_year", nullable = false)
     private int launchYear;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "publisher_id", referencedColumnName = "id")
     private PublisherEntity publisher;
 

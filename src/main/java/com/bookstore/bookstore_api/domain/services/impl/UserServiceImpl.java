@@ -5,7 +5,8 @@ import com.bookstore.bookstore_api.api.models.DTOs.GetUserDTO;
 import com.bookstore.bookstore_api.api.models.DTOs.PagedResultDTO;
 import com.bookstore.bookstore_api.api.models.DTOs.UpdateUserDTO;
 import com.bookstore.bookstore_api.domain.models.entities.UserEntity;
-import com.bookstore.bookstore_api.domain.models.enums.RoleType;
+import com.bookstore.bookstore_api.shared.exceptions.EntityDeletionException;
+import com.bookstore.bookstore_api.shared.models.enums.RoleType;
 import com.bookstore.bookstore_api.domain.repositories.UserEntityRepository;
 import com.bookstore.bookstore_api.domain.services.UserService;
 import com.bookstore.bookstore_api.domain.validations.CreateUserValidator;
@@ -14,6 +15,7 @@ import com.bookstore.bookstore_api.infra.security.TokenService;
 import com.bookstore.bookstore_api.shared.exceptions.AlreadyExistsException;
 import com.bookstore.bookstore_api.shared.exceptions.NotFoundException;
 import lombok.AllArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -87,7 +89,11 @@ public class UserServiceImpl implements UserService {
 
         if (!isAuthorized(token, id)) throw new AccessDeniedException("This user does not have permission for this action");
 
-        userEntityRepository.deleteById(user.getId());
+        try {
+            userEntityRepository.deleteById(user.getId());
+        } catch (DataIntegrityViolationException e) {
+            throw new EntityDeletionException("This user cannot be deleted because it is being referenced in another entity");
+        }
     }
 
     private UserEntity buildUserEntity(CreateUserDTO dto) {

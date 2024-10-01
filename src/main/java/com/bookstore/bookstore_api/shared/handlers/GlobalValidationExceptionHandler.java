@@ -1,5 +1,4 @@
 package com.bookstore.bookstore_api.shared.handlers;
-
 import com.bookstore.bookstore_api.shared.models.DTOs.ExceptionDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
@@ -17,7 +16,7 @@ import java.util.Map;
 @ControllerAdvice
 public class GlobalValidationExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ExceptionDTO handleValidationExceptions(MethodArgumentNotValidException ex) {
+    public ExceptionDTO methodArgumentNotValid(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
 
         ex.getBindingResult().getAllErrors().forEach((error) -> {

@@ -1,8 +1,11 @@
 package com.bookstore.bookstore_api.api.controllers;
 
+import com.bookstore.bookstore_api.api.annotations.*;
 import com.bookstore.bookstore_api.api.models.DTOs.CreateBookWithStockDTO;
 import com.bookstore.bookstore_api.api.models.DTOs.UpdateBookWithStockDTO;
 import com.bookstore.bookstore_api.domain.services.BookService;
+import com.bookstore.bookstore_api.shared.web.ApiController;
+import com.bookstore.bookstore_api.shared.web.OpenApiController;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,42 +15,40 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
-@RestController
-@RequestMapping("/api")
 @RequiredArgsConstructor
+@OpenApiController(name = "Book Controller")
+@ApiController(path = "/api/v1")
 public class BookController {
 
     private final BookService bookService;
 
-    @PostMapping("/book")
+    @CreateBookEndpoint
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity create(@RequestBody @Validated CreateBookWithStockDTO body){
         bookService.create(body);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @GetMapping("/book/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @GetBookByIdEndpoint
     public ResponseEntity getById(@PathVariable UUID id){
         var response = bookService.getById(id);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/books")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @GetAllBooksEndpoint
     public ResponseEntity getAll(@RequestParam Integer page, @RequestParam Integer items){
         var response = bookService.getAll(page, items);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PutMapping("/book/{id}")
+    @UpdateBookEndpoint
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity update(@PathVariable UUID id, @RequestBody @Validated UpdateBookWithStockDTO body){
         bookService.update(id, body);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/book/{id}")
+    @DeleteBookEndpoint
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity delete(@PathVariable UUID id) {
         bookService.delete(id);

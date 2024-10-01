@@ -24,11 +24,28 @@ public class BookStockEntity extends BaseEntity {
     @Column(name = "quantity_rented", nullable = false)
     private int quantityRented;
 
+    @Column(name = "number_of_times_rented", nullable = false)
+    private int numberOfTimesRented;
+
     @Builder(toBuilder = true)
-    public BookStockEntity(UUID id, OffsetDateTime createdAt, OffsetDateTime updatedAt, BookEntity book, int quantityAvailable, int quantityRented) {
+    public BookStockEntity(UUID id, OffsetDateTime createdAt, OffsetDateTime updatedAt, BookEntity book, int quantityAvailable, int quantityRented, int numberOfTimesRented) {
         super(id, createdAt, updatedAt);
         this.book = book;
         this.quantityAvailable = quantityAvailable;
         this.quantityRented = quantityRented;
+        this.numberOfTimesRented = numberOfTimesRented;
+    }
+
+    public void changeValuesAfterRent(){
+        if(this.quantityAvailable > 0) {
+          this.quantityAvailable = this.quantityAvailable - 1;
+          this.quantityRented = this.quantityRented + 1;
+          this.numberOfTimesRented = numberOfTimesRented + 1;
+        };
+    }
+
+    public void changeValuesAfterFinalizingRent(){
+            this.quantityAvailable = this.quantityAvailable + 1;
+            this.quantityRented = this.quantityRented - 1;
     }
 }

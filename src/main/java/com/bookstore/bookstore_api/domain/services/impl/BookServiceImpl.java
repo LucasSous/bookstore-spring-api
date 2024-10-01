@@ -10,8 +10,10 @@ import com.bookstore.bookstore_api.domain.services.BookService;
 import com.bookstore.bookstore_api.domain.validations.CreateBookValidator;
 import com.bookstore.bookstore_api.domain.validations.UpdateBookValidator;
 import com.bookstore.bookstore_api.shared.exceptions.AlreadyExistsException;
+import com.bookstore.bookstore_api.shared.exceptions.EntityDeletionException;
 import com.bookstore.bookstore_api.shared.exceptions.NotFoundException;
 import lombok.AllArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -97,7 +99,12 @@ public class BookServiceImpl implements BookService {
     @Transactional
     public void delete(UUID id) {
         BookEntity book = bookRepository.findById(id).orElseThrow(() -> new NotFoundException("Book not found"));
-        bookRepository.deleteById(book.getId());
+        try {
+            bookRepository.deleteById(book.getId());
+        } catch (DataIntegrityViolationException e) {
+            throw new EntityDeletionException("This book cannot be deleted because it is being referenced in another entity");
+        }
+
     }
 
     private BookEntity buildBookEntity(CreateBookWithStockDTO body, PublisherEntity publisher) {

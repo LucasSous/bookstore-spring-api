@@ -1,4 +1,4 @@
-package com.bookstore.bookstore_api.domain.models.enums;
+package com.bookstore.bookstore_api.shared.models.enums;
 
 import org.springframework.security.core.GrantedAuthority;
 

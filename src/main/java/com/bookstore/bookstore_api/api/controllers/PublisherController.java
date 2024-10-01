@@ -1,8 +1,11 @@
 package com.bookstore.bookstore_api.api.controllers;
 
+import com.bookstore.bookstore_api.api.annotations.*;
 import com.bookstore.bookstore_api.api.models.DTOs.CreatePublisherDTO;
 import com.bookstore.bookstore_api.api.models.DTOs.UpdatePublisherDTO;
 import com.bookstore.bookstore_api.domain.services.PublisherService;
+import com.bookstore.bookstore_api.shared.web.ApiController;
+import com.bookstore.bookstore_api.shared.web.OpenApiController;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,42 +15,40 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
-@RestController
-@RequestMapping("/api")
 @RequiredArgsConstructor
+@OpenApiController(name = "Publisher Controller")
+@ApiController(path = "/api/v1")
 public class PublisherController {
 
     private final PublisherService publisherService;
 
-    @PostMapping("/publisher")
+    @CreatePublisherEndpoint
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity create(@RequestBody @Validated CreatePublisherDTO body){
         publisherService.create(body);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @GetMapping("/publisher/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @GetPublisherByIdEndpoint
     public ResponseEntity getById(@PathVariable UUID id){
         var response = publisherService.getById(id);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/publishers")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @GetAllPublishersEndpoint
     public ResponseEntity getAll(@RequestParam Integer page, @RequestParam Integer items){
         var response = publisherService.getAll(page, items);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PutMapping("/publisher/{id}")
+    @UpdatePublisherEndpoint
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity update(@PathVariable UUID id, @RequestBody @Validated UpdatePublisherDTO body ){
         publisherService.update(id, body);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/publisher/{id}")
+    @DeletePublisherEndpoint
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity delete(@PathVariable UUID id){
         publisherService.delete(id);
