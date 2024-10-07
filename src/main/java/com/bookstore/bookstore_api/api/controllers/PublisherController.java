@@ -36,7 +36,7 @@ public class PublisherController {
     }
 
     @GetAllPublishersEndpoint
-    public ResponseEntity getAll(@RequestParam Integer page, @RequestParam Integer items){
+    public ResponseEntity getAll(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "10") Integer items){
         var response = publisherService.getAll(page, items);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

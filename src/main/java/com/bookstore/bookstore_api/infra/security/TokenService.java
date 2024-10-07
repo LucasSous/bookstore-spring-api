@@ -5,6 +5,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.bookstore.bookstore_api.domain.models.entities.UserEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,9 @@ import java.time.ZoneOffset;
 public class TokenService {
     @Value("${api.security.token.secret}")
     private String secret;
+
+    @Autowired
+    private TokenBlacklistService tokenBlacklistService;
 
     public String generateToken(UserEntity user) {
         try {
@@ -37,6 +41,7 @@ public class TokenService {
 
     public String validateToken(String token){
         try {
+            if(tokenBlacklistService.isTokenBlacklisted(token)) return null;
             Algorithm algorithm = Algorithm.HMAC256(secret);
             return JWT.require(algorithm)
                     .withIssuer("bookstore-api")

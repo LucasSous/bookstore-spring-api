@@ -2,6 +2,7 @@ package com.bookstore.bookstore_api.infra.security;
 
 import com.bookstore.bookstore_api.domain.models.entities.UserEntity;
 import com.bookstore.bookstore_api.domain.repositories.UserEntityRepository;
+import com.bookstore.bookstore_api.shared.utils.TokenUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,7 +26,7 @@ public class SecurityFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        var token = this.recoverToken(request);
+        var token = TokenUtil.recoverToken(request);
         var login = tokenService.validateToken(token);
 
         if(login != null){
@@ -35,11 +36,5 @@ public class SecurityFilter extends OncePerRequestFilter {
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
         filterChain.doFilter(request, response);
-    }
-
-    private String recoverToken(HttpServletRequest request){
-        var authHeader = request.getHeader("Authorization");
-        if(authHeader == null) return null;
-        return authHeader.replace("Bearer ", "");
     }
 }

@@ -63,6 +63,15 @@ public class RentServiceImpl implements RentService {
     }
 
     @Override
+    public PagedResultDTO<GetRentDTO> getUserRents(Integer page, Integer items, UUID userId) {
+        UserEntity user = getUserEntity(userId);
+        Pageable pageRequest = PageRequest.of(page, items);
+        Page<RentEntity> pagedResult = rentRepository.findByUserId(user.getId(), pageRequest);
+
+        return buildPagedResponseDTO(pagedResult);
+    }
+
+    @Override
     @Transactional
     public void update(UUID id, UpdateRentDTO body) {
         RentEntity rent = getRentEntity(id);

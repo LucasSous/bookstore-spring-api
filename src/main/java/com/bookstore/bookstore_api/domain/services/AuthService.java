@@ -7,4 +7,6 @@ public interface AuthService {
 
     LoginResponseDTO login(LoginRequestDTO body);
 
+    void logout(String token);
+
 }

@@ -135,9 +135,8 @@ public class UserServiceImpl implements UserService {
     }
 
     private boolean isAuthorized(String token, UUID userId) {
-        var formattedToken = token.substring(7);
-        var loginId = tokenService.getClaimFromToken(formattedToken, "userId");
-        var loginRole = tokenService.getClaimFromToken(formattedToken, "role");
+        var loginId = tokenService.getClaimFromToken(token, "userId");
+        var loginRole = tokenService.getClaimFromToken(token, "role");
         return loginId.equals(userId.toString()) || loginRole.equals(RoleType.ADMIN.name());
     }
 }

@@ -36,8 +36,20 @@ public class BookController {
     }
 
     @GetAllBooksEndpoint
-    public ResponseEntity getAll(@RequestParam Integer page, @RequestParam Integer items){
+    public ResponseEntity getAll(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "10") Integer items){
         var response = bookService.getAll(page, items);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetAllAvailableBooksEndpoint
+    public ResponseEntity getAllAvailable(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "10") Integer items){
+        var response = bookService.getAllAvailable(page, items);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMostRentedBooksEndpoint
+    public ResponseEntity getMostRented(){
+        var response = bookService.getTop5MostRented();
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

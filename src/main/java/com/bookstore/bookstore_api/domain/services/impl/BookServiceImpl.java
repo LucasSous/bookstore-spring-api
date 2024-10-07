@@ -70,6 +70,22 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    public PagedResultDTO<GetBookDTO> getAllAvailable(Integer page, Integer items) {
+        Pageable pageRequest = PageRequest.of(page, items);
+        Page<BookEntity> pagedResult = bookRepository.findAllAvailable(pageRequest);
+
+        return buildPagedResponseDTO(pagedResult);
+    }
+
+    @Override
+    public List<GetBookDTO> getTop5MostRented() {
+        Pageable pageRequest = PageRequest.of(0, 5);
+        Page<BookEntity> books = bookRepository.findTop5MostRented(pageRequest);
+
+        return buildGetBookDTOList(books);
+    }
+
+    @Override
     @Transactional
     public void update(UUID id, UpdateBookWithStockDTO body) {
         updateBookValidator.validator(body);

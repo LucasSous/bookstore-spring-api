@@ -15,6 +15,8 @@ public interface RentService {
 
     PagedResultDTO<GetRentDTO> getAll(Integer page, Integer items);
 
+    PagedResultDTO<GetRentDTO> getUserRents(Integer page, Integer items, UUID userId);
+
     void update(UUID id, UpdateRentDTO body);
 
     void delete(UUID id);

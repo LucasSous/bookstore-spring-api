@@ -36,8 +36,15 @@ public class RentController {
     }
 
     @GetAllRentsEndpoint
-    public ResponseEntity getAll(@RequestParam Integer page, @RequestParam Integer items){
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity getAll(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "10") Integer items){
         var response = rentService.getAll(page, items);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetUserRentsEndpoint
+    public ResponseEntity getUserRents(@PathVariable UUID userId, @RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "10") Integer items){
+        var response = rentService.getUserRents(page, items, userId);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

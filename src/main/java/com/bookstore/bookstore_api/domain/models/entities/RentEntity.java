@@ -18,11 +18,11 @@ import java.util.UUID;
 @Table(name = "rents")
 public class RentEntity extends BaseEntity {
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "book_id", referencedColumnName = "id")
     private BookEntity book;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private UserEntity user;
 

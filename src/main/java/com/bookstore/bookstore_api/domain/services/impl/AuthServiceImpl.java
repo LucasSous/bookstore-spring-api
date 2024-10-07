@@ -5,6 +5,7 @@ import com.bookstore.bookstore_api.api.models.DTOs.LoginResponseDTO;
 import com.bookstore.bookstore_api.domain.models.entities.UserEntity;
 import com.bookstore.bookstore_api.domain.repositories.UserEntityRepository;
 import com.bookstore.bookstore_api.domain.services.AuthService;
+import com.bookstore.bookstore_api.infra.security.TokenBlacklistService;
 import com.bookstore.bookstore_api.infra.security.TokenService;
 import com.bookstore.bookstore_api.shared.exceptions.NotFoundException;
 import com.bookstore.bookstore_api.shared.exceptions.UnauthorizedException;
@@ -19,6 +20,7 @@ public class AuthServiceImpl implements AuthService {
     private final UserEntityRepository userEntityRepository;
     private final PasswordEncoder passwordEncoder;
     private final TokenService tokenService;
+    private final TokenBlacklistService tokenBlacklistService;
     @Override
     public LoginResponseDTO login(LoginRequestDTO body) {
         UserEntity user = userEntityRepository.findByEmail(body.email()).orElseThrow(() -> new NotFoundException("User not found"));
@@ -32,5 +34,10 @@ public class AuthServiceImpl implements AuthService {
                 .token(token)
                 .role(user.getRole())
                 .build();
+    }
+
+    @Override
+    public void logout(String token) {
+        tokenBlacklistService.addToBlacklist(token);
     }
 }
